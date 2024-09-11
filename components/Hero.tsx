@@ -57,7 +57,7 @@ export default function Hero() {
           </div>
           <div className="p-4">
             <video
-              src="/demo.mp4"
+              src="/demoo.mp4"
               width={800}
               height={300}
               className="w-full h-auto"
