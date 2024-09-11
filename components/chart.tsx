@@ -26,7 +26,7 @@ const chartConfig = {
   rating: { label: 'User Ratings', color: '#4CAF50' }
 };
 
-const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
+const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const { user, rating, message } = payload[0].payload;
     return (
