@@ -203,7 +203,7 @@ function Filter({
   column,
   table,
 }: {
-  column: Column<Feedback, any>;
+  column: Column<Feedback>;
   table: TanstackTable<Feedback>;
 }) {
   const firstValue = table
