@@ -14,7 +14,7 @@ const PageHeader = () => {
     <header className="sticky inset-x-0 top-0 z-30 w-full transition-all bg-white/20 backdrop-blur-md">
       <div className="w-full max-w-screen-xl px-2.5 lg:px-20 relative mx-auto border-b">
         <div className="flex h-14 items-center justify-between">
-         <a href='/'><Image src="/logo.png" alt="Logo" width={120} height={200} /></a> 
+         <a href='/'><Image src="/log.svg" alt="Logo" width={150} height={200} /></a> 
           <div>
             <SignedOut>
               <SignInButton>
@@ -26,7 +26,7 @@ const PageHeader = () => {
             </SignedOut>
             <SignedIn>
               <HeaderMenu />
-              <UserButton />
+              <UserButton/>
             </SignedIn>
           </div>
         </div>

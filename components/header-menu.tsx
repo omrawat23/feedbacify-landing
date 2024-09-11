@@ -1,45 +1,72 @@
 "use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Folder, CreditCard } from 'lucide-react';
-import { useState } from "react";
-import Link from "next/link";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Folder, CreditCard, Settings, HelpCircle, LogOut } from 'lucide-react';
 
 const HeaderMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setOpen(prevOpen => !prevOpen);
-  }
+  };
+
+  const handleItemClick = (path: string) => {
+    router.push(path);
+    setOpen(false);
+  };
 
   return (
-    <DropdownMenu open={open} onOpenChange={toggleMenu}>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button onClick={toggleMenu} className="mr-4" variant="secondary">
-          {
-            open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />
-          }
+        <Button 
+          onClick={toggleMenu} 
+          className="mr-4" 
+          variant="ghost" 
+          size="icon"
+          aria-label={open ? "Close menu" : "Open menu"}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard" className="flex">
-            <Folder className="mr-2 h-4 w-4" /><span>Projects</span>
-          </Link></DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/payments" className="flex">
-            <CreditCard className="mr-2 h-4 w-4" /><span>Billing</span>
-          </Link>
+      <DropdownMenuContent className="w-56" align="end">
+        <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => handleItemClick("/dashboard")}>
+          <Folder className="mr-2 h-4 w-4" />
+          <span>Projects</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => handleItemClick("/payments")}>
+          <CreditCard className="mr-2 h-4 w-4" />
+          <span>Billing</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => handleItemClick("/settings")}>
+          <Settings className="mr-2 h-4 w-4" />
+          <span>Settings</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => handleItemClick("/help")}>
+          <HelpCircle className="mr-2 h-4 w-4" />
+          <span>Help & Support</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => handleItemClick("/logout")} className="text-red-600">
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
+  );
+};
 
 export default HeaderMenu;
-
