@@ -3,9 +3,7 @@
 import React from 'react';
 import { InferSelectModel } from "drizzle-orm";
 import { feedbacks } from "@/db/schema";
-import {
-  ChartContainer,
-} from "@/components/ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
 import {
   BarChart,
   Bar,
@@ -15,6 +13,7 @@ import {
   ResponsiveContainer,
   Tooltip,
   Legend,
+  TooltipProps,
 } from 'recharts';
 
 type Feedback = InferSelectModel<typeof feedbacks>;
@@ -23,6 +22,25 @@ interface ChartProps {
   data: Feedback[];
 }
 
+const chartConfig = {
+  rating: {
+    label: 'User Ratings',
+    color: '#4CAF50'
+  }
+};
+
+const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-2 border border-gray-300 rounded shadow">
+        <p className="font-semibold">User: {label}</p>
+        <p>Rating: {payload[0].value}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 const Chart: React.FC<ChartProps> = ({ data }) => {
   const processedData = React.useMemo(() => {
     return data.map((feedback, index) => ({
@@ -30,25 +48,6 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
       rating: feedback.rating || 0
     })).slice(0, 20); // Limit to 20 users for better visualization
   }, [data]);
-
-  const chartConfig = {
-    rating: {
-      label: 'User Ratings',
-      color: '#4CAF50'
-    }
-  };
-
-  const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-2 border border-gray-300 rounded shadow">
-          <p className="font-semibold">User: {label}</p>
-          <p>Rating: {payload[0].value}</p>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <div className="p-2 mt-5">
@@ -65,7 +64,7 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
-            <Bar dataKey="rating" fill="var(--color-rating)" />
+            <Bar dataKey="rating" fill={chartConfig.rating.color} />
           </BarChart>
         </ResponsiveContainer>
       </ChartContainer>

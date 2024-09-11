@@ -1,7 +1,7 @@
 "use client";
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft } from 'lucide-react'
+
+import React from 'react';
+import { ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft } from 'lucide-react';
 import Ratings from './ratings';
 
 import {
@@ -15,16 +15,14 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from '@tanstack/react-table'
+} from '@tanstack/react-table';
 
 import { InferSelectModel } from "drizzle-orm";
-import { feedbacks, projects } from "@/db/schema";
+import { feedbacks } from "@/db/schema";
 
 type Feedback = InferSelectModel<typeof feedbacks>;
 
-function Table(props: { data: Feedback[] }) {
-  const rerender = React.useReducer(() => ({}), {})[1]
-
+function Table({ data }: { data: Feedback[] }) {
   const columns = React.useMemo<ColumnDef<Feedback>[]>(
     () => [
       {
@@ -57,34 +55,27 @@ function Table(props: { data: Feedback[] }) {
       }
     ],
     []
-  )
-
-
+  );
 
   return (
     <>
-      <MyTable
-        {...{
-          data: props.data,
-          columns,
-        }}
-      />
+      <MyTable data={data} columns={columns} />
       <hr />
     </>
-  )
+  );
 }
 
 function MyTable({
   data,
   columns,
 }: {
-  data: Feedback[]
-  columns: ColumnDef<Feedback>[]
+  data: Feedback[];
+  columns: ColumnDef<Feedback>[];
 }) {
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
-  })
+  });
 
   const table = useReactTable({
     columns,
@@ -95,12 +86,10 @@ function MyTable({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
-    //no need to pass pageCount or rowCount with client-side pagination as it is calculated automatically
     state: {
       pagination,
     },
-    // autoResetPageIndex: false, // turn off page index reset when sorting or filtering
-  })
+  });
 
   return (
     <div className="p-2 mt-5">
@@ -109,56 +98,48 @@ function MyTable({
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id} className="border-b border-slate-300">
-              {headerGroup.headers.map(header => {
-                return (
-                  <th key={header.id} className="text-left bg-gray-50 rounded-t-md p-4" colSpan={header.colSpan}>
-                    <div
-                      {...{
-                        className: header.column.getCanSort()
-                          ? 'cursor-pointer select-none'
-                          : '',
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: ' 🔼',
-                        desc: ' 🔽',
-                      }[header.column.getIsSorted() as string] ?? null}
-                      {header.column.getCanFilter() ? (
-                        <div className="mt-2">
-                          <Filter column={header.column} table={table} />
-                        </div>
-                      ) : null}
-                    </div>
-                  </th>
-                )
-              })}
+              {headerGroup.headers.map(header => (
+                <th key={header.id} className="text-left bg-gray-50 rounded-t-md p-4" colSpan={header.colSpan}>
+                  <div
+                    {...{
+                      className: header.column.getCanSort()
+                        ? 'cursor-pointer select-none'
+                        : '',
+                      onClick: header.column.getToggleSortingHandler(),
+                    }}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {{
+                      asc: ' 🔼',
+                      desc: ' 🔽',
+                    }[header.column.getIsSorted() as string] ?? null}
+                    {header.column.getCanFilter() ? (
+                      <div className="mt-2">
+                        <Filter column={header.column} table={table} />
+                      </div>
+                    ) : null}
+                  </div>
+                </th>
+              ))}
             </tr>
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map(cell => {
-                  return (
-                    <td key={cell.id} className="p-4 border-b" style={{
-                      width: cell.column.getSize(),
-                    }}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id} className="p-4 border-b" style={{ width: cell.column.getSize() }}>
+                  {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
       <div className="h-2" />
@@ -197,17 +178,15 @@ function MyTable({
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              table.setPageIndex(page)
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
             }}
             className="border p-1 rounded w-16"
           />
         </span>
         <select
           value={table.getState().pagination.pageSize}
-          onChange={e => {
-            table.setPageSize(Number(e.target.value))
-          }}
+          onChange={e => table.setPageSize(Number(e.target.value))}
         >
           {[10, 20, 30, 40, 50].map(pageSize => (
             <option key={pageSize} value={pageSize}>
@@ -217,21 +196,21 @@ function MyTable({
         </select>
       </div>
     </div>
-  )
+  );
 }
 
 function Filter({
   column,
   table,
 }: {
-  column: Column<any, any>
-  table: TanstackTable<any>
+  column: Column<Feedback, any>;
+  table: TanstackTable<Feedback>;
 }) {
   const firstValue = table
     .getPreFilteredRowModel()
-    .flatRows[0]?.getValue(column.id)
+    .flatRows[0]?.getValue(column.id);
 
-  const columnFilterValue = column.getFilterValue()
+  const columnFilterValue = column.getFilterValue();
 
   return typeof firstValue === 'number' ? (
     <div className="flex space-x-2" onClick={e => e.stopPropagation()}>
@@ -269,7 +248,7 @@ function Filter({
       type="text"
       value={(columnFilterValue ?? '') as string}
     />
-  )
+  );
 }
 
 export default Table;

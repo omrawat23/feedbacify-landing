@@ -19,7 +19,6 @@ function StarIcon(props: React.SVGProps<SVGSVGElement>) {
 
 const Ratings = ({
   rating,
-  count,
 }: {
   rating: number;
   count: number;

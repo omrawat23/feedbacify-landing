@@ -5,19 +5,17 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Lock } from "lucide-react";
 
-
 type Project = InferSelectModel<typeof projects>;
 
 type Props = {
-  projects: Project[];
+  projects: Project[];  // props contains projects directly
 };
 
-const ProjectsList = (props: Props) => {
-
+const ProjectsList = ({ projects }: Props) => {
   return (
     <div>
       <ul className="grid grid-cols-1 md:grid-cols-3 m-5 p-4 gap-4">
-        {props.projects.map((project: Project) => (
+        {projects.map((project: Project) => (
           <li key={project.id}>
             <Card className="max-w-[350px] flex flex-col h-full">
               <CardHeader className="flex-1">
@@ -34,6 +32,7 @@ const ProjectsList = (props: Props) => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
+
 export default ProjectsList;
