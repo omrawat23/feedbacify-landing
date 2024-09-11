@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
-import Image from 'next/image';
 import { useUser } from '@clerk/nextjs';
 
 export default function Hero() {
@@ -57,13 +56,18 @@ export default function Hero() {
             </div>
           </div>
           <div className="p-4">
-            <Image
-              src="/demoo.gif"
-              alt="Application mockup"
+            <video
+              src="/demo.mp4"
               width={800}
               height={300}
               className="w-full h-auto"
-            />
+              controls
+              autoPlay
+              loop
+              muted
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>
