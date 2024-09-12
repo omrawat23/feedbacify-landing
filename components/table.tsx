@@ -14,7 +14,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-
+import { Table as ReactTable } from '@tanstack/react-table'; 
 import { InferSelectModel } from 'drizzle-orm';
 import { feedbacks } from '@/db/schema';
 
@@ -184,7 +184,7 @@ function MyTable({ data, columns }: { data: Feedback[]; columns: ColumnDef<Feedb
   );
 }
 
-function Filter({ column, table }: { column: Column<Feedback>; table:any}) {
+function Filter({ column, table }: { column: Column<Feedback>; table: ReactTable<Feedback> }) {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id);
   const columnFilterValue = column.getFilterValue();
 

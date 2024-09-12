@@ -30,7 +30,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
   const embedCode = `<my-widget project-id="${params.projectId}"></my-widget>\n<script src="${widgetUrl}/widget.umd.js"></script>`
   
   // Styled iFrame embed code
-  const iframeCode = `<iframe src="${widgetUrl}/embed?projectId=${params.projectId}" width="100%" style="height: 100%; min-height: 700px" frameborder="0"></iframe>`
+  // const iframeCode = `<iframe src="${widgetUrl}/embed?projectId=${params.projectId}" width="100%" style="height: 100%; min-height: 700px" frameborder="0"></iframe>`
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg">
@@ -58,14 +58,14 @@ export default function Page({ params }: { params: { projectId: string } }) {
         <h2 className="text-xl font-semibold mb-2 text-gray-900">Instructions:</h2>
         <ol className="list-decimal list-inside text-gray-700 space-y-2">
           <li>Copy the code above (either the widget code or iframe).</li>
-          <li>Paste it into your website's HTML, just before the closing &lt;/body&gt; tag.</li>
+          <li>Paste it into your website&apos;s HTML, just before the closing &lt;/body&gt; tag.</li>
           <li>The feedback widget will automatically appear on your site.</li>
         </ol>
       </div>
       
       <div className="mt-8 p-4 bg-gray-100 rounded-lg">
         <p className="text-gray-800">
-          <strong>Note:</strong> Make sure to test the widget on your site to ensure it's working correctly.
+          <strong>Note:</strong> Make sure to test the widget on your site to ensure it&apos;s working correctly.
           If you encounter any issues, please check your console for errors or contact support.
         </p>
       </div>

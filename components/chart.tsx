@@ -27,6 +27,14 @@ interface ChartProps {
   data: Feedback[]
 }
 
+interface CustomAxisTickProps {
+  x: number;
+  y: number;
+  payload: {
+    value: string | number;
+  };
+}
+
 const chartConfig = {
   rating: { label: 'User Ratings', color: 'hsl(var(--primary))' }
 }
@@ -80,9 +88,13 @@ export default function Chart({ data }: ChartProps) {
 
   const isMobile = dimensions.width < 640
 
-  const renderCustomAxisTick = ({ x, y, payload }: any) => {
-    const limit = isMobile ? 10 : 15
-    const text = payload.value.length > limit ? payload.value.slice(0, limit) + '...' : payload.value
+  const renderCustomAxisTick = ({ x, y, payload }: CustomAxisTickProps) => {
+    const isMobile = dimensions.width < 640; 
+    const limit = isMobile ? 10 : 15;
+    const text = typeof payload.value === 'string' && payload.value.length > limit 
+      ? `${payload.value.slice(0, limit)}...` 
+      : payload.value;
+      
     return (
       <g transform={`translate(${x},${y})`}>
         <text
