@@ -1,70 +1,120 @@
-import { db } from "@/db";
-import { eq } from "drizzle-orm";
-import { projects as dbProjects } from "@/db/schema";
-import Link from "next/link";
-import { Globe, ChevronLeft, Code, BarChart } from 'lucide-react';
-import Table from "@/components/table";
-import Chart from "@/components/chart";  // Import the Chart component
+import { db } from "@/db"
+import { eq } from "drizzle-orm"
+import { projects as dbProjects } from "@/db/schema"
+import Link from "next/link"
+import { Globe, ChevronLeft, Code, BarChart, MessageSquare } from "lucide-react"
+import Table from "@/components/table"
+import Chart from "@/components/chart"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 
-const Page = async ({ params }: {
+interface ProjectPageProps {
   params: {
     projectId: string
   }
-}) => {
-  if (!params.projectId) return (<div>Invalid Project ID</div>);
+}
 
+async function getProjectData(projectId: string) {
   const projects = await db.query.projects.findMany({
-    where: (eq(dbProjects.id, parseInt(params.projectId))),
+    where: eq(dbProjects.id, parseInt(projectId)),
     with: {
       feedbacks: true
     }
-  });
+  })
+  return projects[0]
+}
 
-  const project = projects[0];
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  if (!params.projectId) return <div>Invalid Project ID</div>
+
+  const project = await getProjectData(params.projectId)
+
+  if (!project) return <div>Project not found</div>
+
+const averageRating = project.feedbacks.reduce((sum, feedback) => {
+  if (feedback.rating !== null) {
+    return sum + feedback.rating;
+  }
+  return sum;
+}, 0) / project.feedbacks.length;
 
   return (
-    <div>
-      <div>
-        <Link href="/dashboard" className="flex items-center text-indigo-700 mb-5 w-fit">
-          <ChevronLeft className="h-5 w-5 mr-1" />
-          <span className="text-lg">Back to projects</span>
-        </Link>
-      </div>
-      <div className="flex justify-between items-start mb-8">
-        <div className="proj-info">
-          <h1 className="text-3xl font-bold mb-3">{project.name}</h1>
-          <h2 className="text-primary-background text-xl mb-2">{project.description}</h2>
-        </div>
-        <div className="flex flex-col">
-          {project.url ? (
-            <Link href={project.url} className="underline text-indigo-700 flex items-center">
-              <Globe className="h-5 w-5 mr-1" />
-              <span className="text-lg">Visit site</span>
-            </Link>
-          ) : null}
-          <Link href={`/projects/${params.projectId}/instructions`} className="underline text-indigo-700 flex items-center mt-2">
-            <Code className="h-5 w-5 mr-1" />
-            <span className="text-lg">Embed Code</span>
-          </Link>
-        </div>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center text-primary hover:text-primary/80 mb-6 transition-colors"
+      >
+        <ChevronLeft className="h-4 w-4 mr-2" />
+        <span>Back to projects</span>
+      </Link>
+
+      <div className="grid gap-6 md:grid-cols-3 mb-8">
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold">{project.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xl text-muted-foreground mb-4">{project.description}</p>
+            <div className="flex items-center space-x-4">
+              <Badge variant="secondary" className="text-sm px-2 py-1">
+                {project.feedbacks.length} Feedbacks
+              </Badge>
+              <Badge variant="secondary" className="text-sm px-2 py-1">
+                Avg Rating: {averageRating.toFixed(1)}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col space-y-2">
+            {project.url && (
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link href={project.url}>
+                  <Globe className="h-4 w-4 mr-2" />
+                  Visit site
+                </Link>
+              </Button>
+            )}
+            <Button asChild variant="outline" className="w-full justify-start">
+              <Link href={`/projects/${params.projectId}/instructions`}>
+                <Code className="h-4 w-4 mr-2" />
+                Embed Code
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
       
       {/* Chart Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center">
-          <BarChart className="h-6 w-6 mr-2" />
-          Feedback Ratings Distribution
-        </h2>
-        <Chart data={project.feedbacks} />
-      </div>
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold flex items-center">
+            <BarChart className="h-6 w-6 mr-2" />
+            Feedback Ratings Distribution
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Chart data={project.feedbacks} />
+        </CardContent>
+      </Card>
       
       {/* Table Section */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Feedback Details</h2>
-        <Table data={project.feedbacks} />
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold flex items-center">
+            <MessageSquare className="h-6 w-6 mr-2" />
+            Feedback Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table data={project.feedbacks} />
+        </CardContent>
+      </Card>
     </div>
   )
 }
-
-export default Page;
