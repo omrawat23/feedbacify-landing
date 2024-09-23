@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs"; 
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +12,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Folder, CreditCard, Settings, HelpCircle, LogOut } from 'lucide-react';
+import { Menu, X, Folder, LogOut } from 'lucide-react';
 
 const HeaderMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
+  const { signOut } = useAuth(); 
 
   const toggleMenu = () => {
     setOpen(prevOpen => !prevOpen);
@@ -24,6 +26,11 @@ const HeaderMenu = () => {
   const handleItemClick = (path: string) => {
     router.push(path);
     setOpen(false);
+  };
+
+  const handleLogout = async () => {
+    await signOut(); 
+    router.push("/"); 
   };
 
   return (
@@ -46,20 +53,7 @@ const HeaderMenu = () => {
           <Folder className="mr-2 h-4 w-4" />
           <span>Projects</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => handleItemClick("/payments")}>
-          <CreditCard className="mr-2 h-4 w-4" />
-          <span>Billing</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => handleItemClick("/settings")}>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => handleItemClick("/help")}>
-          <HelpCircle className="mr-2 h-4 w-4" />
-          <span>Help & Support</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => handleItemClick("/logout")} className="text-red-600">
+        <DropdownMenuItem onSelect={handleLogout} className="text-red-600">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
