@@ -117,17 +117,17 @@ export default function FeedbacifyWidget({ projectId }: FeedbacifyWidgetProps) {
         ) : (
           <ol className="list-decimal list-inside text-gray-700 space-y-2">
             <li>Copy the React component code above.</li>
-            <li>Create a new file in your React/Next.js project (e.g., MyWidget.tsx).</li>
+            <li>Create a new file in your React/Next.js project (e.g., FeedbacifyWidget.tsx).</li>
             <li>Paste the copied code into this new file.</li>
-            <li>Import and use the MyWidget component in your desired location (e.g., layout.tsx)</li>
+            <li>Import and use the FeedbacifyWidget component in your desired location (e.g., layout.tsx)</li>
             <li className="ml-8">
               <code className="bg-gray-200 p-1 rounded">
-                import MyWidget from &apos;./MyWidget&apos;
+                import FeedbacifyWidget from &apos;./FeedbacifyWidget&apos;
               </code>
             </li>
             <li className="ml-8">
               <code className="bg-gray-200 p-1 rounded">
-              {'<FeedbacifyWidget projectId={${params.projectId}}/>'}
+              {`<FeedbacifyWidget projectId={${params.projectId}} />`}
               </code>
             </li>
           </ol>
@@ -138,9 +138,13 @@ export default function FeedbacifyWidget({ projectId }: FeedbacifyWidgetProps) {
         <p className="text-gray-800">
           <strong>Note:</strong>{' '}
           {embedType === 'html' ? (
-            "Make sure to test the widget on your site to ensure it&apos;s working correctly. If you encounter any issues, please check your console for errors or contact support."
+            <p>
+              Make sure to test the widget on your site to ensure it's working correctly. If you encounter any issues, please check your console for errors or contact support.
+            </p>
           ) : (
-            "This code includes TypeScript declarations for the custom element. If you&apos;re using JavaScript, you can remove the &apos;declare global&apos; block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team."
+            <p>
+              This code includes TypeScript declarations for the custom element. If you're using JavaScript, you can remove the <code>declare global</code> block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team.
+            </p>
           )}
         </p>
       </div>
