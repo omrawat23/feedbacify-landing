@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef } from 'react'
 
+// Disable the ESLint rule for this block
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -14,6 +16,7 @@ declare global {
     }
   }
 }
+
 
 interface FeedbacifyWidgetProps {
   projectId: string;
