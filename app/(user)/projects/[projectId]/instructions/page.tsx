@@ -139,11 +139,11 @@ export default function FeedbacifyWidget({ projectId }: FeedbacifyWidgetProps) {
           <strong>Note:</strong>{' '}
           {embedType === 'html' ? (
             <p>
-              Make sure to test the widget on your site to ensure it's working correctly. If you encounter any issues, please check your console for errors or contact support.
+              Make sure to test the widget on your site to ensure its working correctly. If you encounter any issues, please check your console for errors or contact support.
             </p>
           ) : (
             <p>
-              This code includes TypeScript declarations for the custom element. If you're using JavaScript, you can remove the <code>declare global</code> block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team.
+              This code includes TypeScript declarations for the custom element. If youre using JavaScript, you can remove the <code>declare global</code> block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team.
             </p>
           )}
         </p>
