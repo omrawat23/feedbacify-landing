@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef } from 'react'
 
-// Disable the ESLint rule for this block
-// eslint-disable-next-line @typescript-eslint/no-namespace
+// Disable the ESLint rule for this entire block
+/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -16,7 +16,7 @@ declare global {
     }
   }
 }
-
+/* eslint-enable @typescript-eslint/no-namespace */
 
 interface FeedbacifyWidgetProps {
   projectId: string;
