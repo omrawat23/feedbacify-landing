@@ -4,7 +4,7 @@ import {
 } from '@clerk/nextjs'
 import './globals.css'
 import PageHeader from '@/components/page-header';
-import MyWidget from '@/components/feedback';
+import FeedbacifyWidget from '@/components/feedback';
 
 export default function RootLayout({
   children,
@@ -17,7 +17,7 @@ export default function RootLayout({
         <body>
           <PageHeader />
           {children}
-          <MyWidget/>
+          <FeedbacifyWidget projectId="4" />
         </body>
       </html>
     </ClerkProvider>

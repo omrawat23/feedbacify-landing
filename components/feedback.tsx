@@ -1,44 +1,52 @@
-// MyWidget.tsx
 'use client'
+import React, { useEffect, useRef } from 'react';
 
-import React, { useEffect, useRef } from 'react'
-
-// Define the custom element props
-interface MyWidgetElementProps extends React.HTMLAttributes<HTMLElement> {
-  'project-id': string;
+interface FeedbacifyWidgetProps {
+  projectId: string;
 }
 
-// Extend JSX.IntrinsicElements to include our custom element
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'my-widget': React.DetailedHTMLProps<MyWidgetElementProps, HTMLElement>;
+      'my-widget': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        'project-id'?: string;
+      };
     }
   }
 }
 
-export default function MyWidget() {
-  const widgetRef = useRef<HTMLElement>(null)
+export default function FeedbacifyWidget({ projectId }: FeedbacifyWidgetProps) {
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
+  const widgetRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://feedbacify-widget.vercel.app/widget.umd.js'
-    script.async = true
-    document.body.appendChild(script)
+    if (!scriptRef.current) {
+      const script = document.createElement('script');
+      script.src = 'https://feedbacify-widget.vercel.app/widget.umd.js';
+      script.async = true;
+      script.onload = () => {
+        console.log('Feedbacify widget script loaded successfully');
+        if (widgetRef.current) {
+          widgetRef.current.setAttribute('project-id', projectId);
+        }
+      };
+      script.onerror = () => {
+        console.error('Failed to load Feedbacify widget script');
+      };
+      document.body.appendChild(script);
+      scriptRef.current = script;
+    }
 
     return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
+      if (scriptRef.current && scriptRef.current.parentNode) {
+        scriptRef.current.parentNode.removeChild(scriptRef.current);
+      }
+    };
+  }, [projectId]);
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      zIndex: 1000
-    }}>
-      <my-widget ref={widgetRef} project-id="4"></my-widget>
+    <div className="feedbacify-widget-container">
+      <my-widget ref={widgetRef} project-id={projectId}></my-widget>
     </div>
-  )
+  );
 }
