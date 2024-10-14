@@ -94,7 +94,7 @@ export default function MyWidget() {
         {embedType === 'html' ? (
           <ol className="list-decimal list-inside text-gray-700 space-y-2">
             <li>Copy the HTML code above.</li>
-            <li>Paste it into your website's HTML, just before the closing &lt;/body&gt; tag.</li>
+            <li>Paste it into your website&apos;s HTML, just before the closing &lt;/body&gt; tag.</li>
             <li>The feedback widget will automatically appear on your site.</li>
           </ol>
         ) : (
@@ -121,9 +121,9 @@ export default function MyWidget() {
         <p className="text-gray-800">
           <strong>Note:</strong>{' '}
           {embedType === 'html' ? (
-            "Make sure to test the widget on your site to ensure it's working correctly. If you encounter any issues, please check your console for errors or contact support."
+            "Make sure to test the widget on your site to ensure it&apos;s working correctly. If you encounter any issues, please check your console for errors or contact support."
           ) : (
-            "This code includes TypeScript declarations for the custom element. If you're using JavaScript, you can remove the 'declare global' block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team."
+            "This code includes TypeScript declarations for the custom element. If you&apos;re using JavaScript, you can remove the 'declare global' block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team."
           )}
         </p>
       </div>

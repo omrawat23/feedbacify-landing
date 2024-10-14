@@ -1,16 +1,18 @@
+// MyWidget.tsx
 'use client'
+
 import React, { useEffect, useRef } from 'react'
 
-// Extend the JSX interface directly
-interface MyWidgetProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
+// Define the custom element props
+interface MyWidgetElementProps extends React.HTMLAttributes<HTMLElement> {
   'project-id': string;
 }
 
-// Declare the custom element
+// Extend JSX.IntrinsicElements to include our custom element
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'my-widget': MyWidgetProps;
+      'my-widget': React.DetailedHTMLProps<MyWidgetElementProps, HTMLElement>;
     }
   }
 }
