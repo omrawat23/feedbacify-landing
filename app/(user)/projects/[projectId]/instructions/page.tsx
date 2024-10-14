@@ -105,7 +105,7 @@ export default function MyWidget() {
             <li>Import and use the MyWidget component in your desired location (e.g., layout.tsx)</li>
             <li className="ml-8">
               <code className="bg-gray-200 p-1 rounded">
-                import MyWidget from './MyWidget'
+                import MyWidget from &apos;./MyWidget&apos;
               </code>
             </li>
             <li className="ml-8">
@@ -123,7 +123,7 @@ export default function MyWidget() {
           {embedType === 'html' ? (
             "Make sure to test the widget on your site to ensure it&apos;s working correctly. If you encounter any issues, please check your console for errors or contact support."
           ) : (
-            "This code includes TypeScript declarations for the custom element. If you&apos;re using JavaScript, you can remove the 'declare global' block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team."
+            "This code includes TypeScript declarations for the custom element. If you&apos;re using JavaScript, you can remove the &apos;declare global&apos; block. The widget script is loaded dynamically to avoid issues with server-side rendering. If you encounter any problems, check your browser console for errors or contact our support team."
           )}
         </p>
       </div>

@@ -31,5 +31,14 @@ export default function MyWidget() {
     }
   }, [])
 
-  return <my-widget ref={widgetRef} project-id="4"></my-widget>
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: '20px',
+      right: '20px',
+      zIndex: 1000
+    }}>
+      <my-widget ref={widgetRef} project-id="4"></my-widget>
+    </div>
+  )
 }
